@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block title %}Message envoyé — NFL Zone{% endblock %}
+
+{% block content %}
+<div class="contact-container">
+    <div class="contact-card contact-success-card">
+        <div class="success-icon">🏈✅</div>
+        <h1>Message envoyé !</h1>
+        <div class="thank-you-body">
+            {% if page.thank_you_text %}
+                {{ page.thank_you_text|richtext }}
+            {% else %}
+                <p>Merci pour votre message. L'équipe <strong>NFL Zone</strong> vous répondra dans les plus brefs délais.</p>
+            {% endif %}
+        </div>
+        <a href="/" class="btn-submit-contact">← Retour à l'accueil</a>
+    </div>
+</div>
+{% endblock %}

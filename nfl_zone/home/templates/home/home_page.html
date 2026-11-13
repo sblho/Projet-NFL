@@ -1,0 +1,111 @@
+
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+<section class="hero-section" style="padding: 3rem 1.5rem; text-align: center;">
+    <h1 class="hero-logo-title">
+        <img src="{% static 'images/logo.png' %}" alt="NFL Zone" class="hero-logo">
+    </h1>
+
+    {% if page.body %}
+        <div class="page-body">
+            {{ page.body|richtext }}
+        </div>
+    {% else %}
+        <p>Bienvenue sur NFL Zone, votre plateforme dédiée à la NFL.</p>
+    {% endif %}
+</section>
+
+    <div class="home-dashboard">
+        <!-- BLOC 1 : RÉSULTATS EN DIRECT -->
+    <section class="dashboard-section">
+        <div class="section-header">
+            <h2>🏈 Scores & Matchs</h2>
+            <a href="/saisons/" class="see-all">Tout le calendrier →</a>
+        </div>
+        <div class="mini-games-grid">
+            {% for game in home_games %}
+                <div class="mini-game-card">
+                    <span class="mini-status">{{ game.status }}</span>
+                    <div class="mini-matchup">
+                        <div class="mini-team">
+                            {% if game.away_logo %}<img src="{{ game.away_logo }}" alt="">{% endif %}
+                            <span>{{ game.away_abbr }}</span>
+                            <strong>{{ game.away_score }}</strong>
+                        </div>
+                        <span class="vs">@</span>
+                        <div class="mini-team">
+                            {% if game.home_logo %}<img src="{{ game.home_logo }}" alt="">{% endif %}
+                            <span>{{ game.home_abbr }}</span>
+                            <strong>{{ game.home_score }}</strong>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>Aucun match récent.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- BLOC 2 : CLASSEMENTS & ACTUALITÉS -->
+    <div class="dashboard-columns">
+        <!-- CLASSEMENT AFC / NFC -->
+        <section class="dashboard-section">
+            <div class="section-header">
+                <h2>🏆 Top Classement</h2>
+                <a href="/equipes/" class="see-all">Toutes les franchises →</a>
+            </div>
+            <div class="standings-split">
+                {% for conf, teams in home_standings.items %}
+                    <div class="conf-table-box">
+                        <h3 class="conf-badge {{ conf|lower }}">{{ conf }}</h3>
+                        <table class="mini-standings-table">
+                            <thead>
+                                <tr>
+                                    <th>Équipe</th>
+                                    <th>V</th>
+                                    <th>D</th>
+                                    <th>%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for t in teams %}
+                                    <tr>
+                                        <td class="team-cell">
+                                            {% if t.logo %}<img src="{{ t.logo }}" alt="">{% endif %}
+                                            {{ t.name }}
+                                        </td>
+                                        <td>{{ t.wins }}</td>
+                                        <td>{{ t.losses }}</td>
+                                        <td>{{ t.pct }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- DERNIÈRES NEWS -->
+        <section class="dashboard-section">
+            <div class="section-header">
+                <h2>⚡ Dernières Actualités</h2>
+            </div>
+            <div class="home-news-list">
+                {% for item in home_news %}
+                    <a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="home-news-item">
+                        <h3>{{ item.title }}</h3>
+                        <span>{{ item.published|truncatechars:25 }}</span>
+                    </a>
+                {% empty %}
+                    <p>Aucune actualité disponible.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

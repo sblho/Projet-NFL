@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block title %}{{ page.title }} — NFL Zone{% endblock %}
+
+{% block content %}
+<div class="history-container">
+    <header class="history-header">
+        <h1>🏛️ {{ page.title }}</h1>
+        {% if page.intro %}
+            <div class="history-intro">{{ page.intro|richtext }}</div>
+        {% endif %}
+
+        <!-- FILTRES PAR CATÉGORIE -->
+        <nav class="history-filters">
+            <a href="{{ page.url }}" class="filter-pill {% if not selected_cat %}active{% endif %}">
+                Tous les articles
+            </a>
+            {% for cat_key, cat_label in categories %}
+                <a href="{{ page.url }}?cat={{ cat_key }}"
+                   class="filter-pill {% if selected_cat == cat_key %}active{% endif %}">
+                    {{ cat_label }}
+                </a>
+            {% endfor %}
+        </nav>
+    </header>
+
+    <!-- GRILLE DES ARTICLES -->
+    {% if articles %}
+        <div class="articles-grid">
+            {% for article in articles %}
+                <article class="article-card">
+                    <a href="{% pageurl article %}" class="article-card-link">
+                        <div class="article-card-image">
+                            {% if article.image_couverture %}
+                                {% image article.image_couverture fill-600x340 %}
+                            {% else %}
+                                <div class="article-image-placeholder">🏈</div>
+                            {% endif %}
+                            <span class="article-cat-badge cat-{{ article.categorie }}">
+                                {{ article.get_categorie_display }}
+                            </span>
+                        </div>
+                        <div class="article-card-body">
+                            <h2>{{ article.title }}</h2>
+                            {% if article.chapeau %}
+                                <p>{{ article.chapeau|truncatewords:24 }}</p>
+                            {% endif %}
+                            <span class="read-more">Lire le dossier →</span>
+                        </div>
+                    </a>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-articles">Aucun article publié dans cette catégorie pour le moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

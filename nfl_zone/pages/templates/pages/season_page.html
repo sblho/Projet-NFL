@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<section class="season-detail-container">
+    <div class="page-title">
+        <h1>{{ page.title }}</h1>
+        {% if current_week %}
+            <span class="week-badge">Semaine {{ current_week }}</span>
+        {% endif %}
+        {% if page.intro %}
+            <div class="intro-text">{{ page.intro|richtext }}</div>
+        {% endif %}
+    </div>
+
+    
+    <!-- Navigation Saison Régulière (Semaines 1 à 18) -->
+<div class="weeks-selector">
+    {% for w in weeks_range %}
+        <a href="?type=2&week={{ w }}" 
+           class="week-btn {% if season_type == '2' and current_week == w %}active{% endif %}">
+            Sem. {{ w }}
+        </a>
+    {% endfor %}
+</div>
+
+<!-- Navigation Playoffs & Super Bowl -->
+<div class="playoffs-selector" style="margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+    {% for round in playoff_rounds %}
+        <a href="?type=3&week={{ round.week }}" 
+           class="week-btn playoff-btn {% if season_type == '3' and current_week == round.week %}active{% endif %}">
+            {{ round.label }}
+        </a>
+    {% endfor %}
+</div>
+
+    <!-- SCOREBOARD DE LA SEMAINE -->
+    <div class="scoreboard-section">
+        <h2>🏈 Matchs & Scores — Semaine {{ current_week }}</h2>
+        {% if games %}
+            <div class="games-grid">
+                {% for game in games %}
+                    <div class="game-card {% if game.completed %}completed{% endif %}">
+                        <div class="game-status">{{ game.status }}</div>
+                        
+                        <div class="team-row">
+                            <div class="team-info">
+                                {% if game.away_logo %}
+                                    <img src="{{ game.away_logo }}" alt="{{ game.away_name }}" class="mini-logo">
+                                {% endif %}
+                                <span>{{ game.away_name }}</span>
+                            </div>
+                            <span class="team-score">{{ game.away_score }}</span>
+                        </div>
+
+                        <div class="team-row">
+                            <div class="team-info">
+                                {% if game.home_logo %}
+                                    <img src="{{ game.home_logo }}" alt="{{ game.home_name }}" class="mini-logo">
+                                {% endif %}
+                                <span>{{ game.home_name }}</span>
+                            </div>
+                            <span class="team-score">{{ game.home_score }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Aucun match disponible pour cette semaine.</p>
+        {% endif %}
+    </div>
+
+    <!-- CLASSEMENTS COMPLETS PAR DIVISION -->
+    {% if standings %}
+    <div class="full-standings-section">
+        <h2>🏆 Classements par Division</h2>
+        <div class="conferences-wrapper">
+            {% for conf in standings %}
+                <div class="conference-block">
+                    <h3 class="conf-header {{ conf.conference|lower }}">{{ conf.conference }}</h3>
+                    <div class="divisions-standings-grid">
+                        {% for div in conf.divisions %}
+                            <div class="division-table-card">
+                                <h4>{{ div.name }}</h4>
+                                <table class="mini-standings-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Équipe</th>
+                                            <th>V</th>
+                                            <th>D</th>
+                                            <th>N</th>
+                                            <th>%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for t in div.teams %}
+                                            <tr>
+                                                <td class="team-cell">
+                                                    {% if t.logo %}<img src="{{ t.logo }}" alt="">{% endif %}
+                                                    {{ t.name }}
+                                                </td>
+                                                <td>{{ t.wins }}</td>
+                                                <td>{{ t.losses }}</td>
+                                                <td>{{ t.ties }}</td>
+                                                <td>{{ t.pct }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="back-link">
+        <a href="{{ page.get_parent.url }}" class="btn-back">← Retour aux saisons</a>
+    </div>
+</section>
+{% endblock %}

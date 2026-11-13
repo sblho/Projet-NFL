@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<section class="seasons-container">
+    <div class="page-title">
+        <h1>{{ page.title }}</h1>
+        {% if page.intro %}
+            <div class="intro-text">{{ page.intro|richtext }}</div>
+        {% else %}
+            <p>Consultez les résultats, calendriers et classements par saison NFL.</p>
+        {% endif %}
+    </div>
+
+    <div class="seasons-grid">
+        {% for season in page.get_children.live.specific %}
+            <a href="{% pageurl season %}" class="season-card">
+                <span class="season-badge">NFL</span>
+                <h2>{{ season.title }}</h2>
+                <span class="season-link">Voir les scores & résultats →</span>
+            </a>
+        {% empty %}
+            <p>Aucune saison publiée pour le moment.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

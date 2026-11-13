@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<section class="teams-container">
+    <div class="page-title">
+        <h1>{{ page.title }}</h1>
+        {% if page.intro %}
+            <div class="intro-text">
+                {{ page.intro|richtext }}
+            </div>
+        {% else %}
+            <p>Découvrez les 32 franchises réparties par conférences et divisions.</p>
+        {% endif %}
+    </div>
+
+    <!-- CONFÉRENCE AFC -->
+    <div class="conference-block">
+        <h2 class="conference-title afc">American Football Conference (AFC)</h2>
+        <div class="divisions-grid">
+            {% for div in page.get_divisions %}
+                <div class="division-card">
+                    <h3>AFC {{ div }}</h3>
+                    <ul>
+                        {% for team in page.get_children.live.specific %}
+                            {% if team.conference == "AFC" and team.division == div %}
+                                <li>
+                                    <a href="{% pageurl team %}">
+                                        {% if team.logo %}
+                                            {% image team.logo fill-30x30 alt=team.title %}
+                                        {% endif %}
+                                        {{ team.title }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- CONFÉRENCE NFC -->
+    <div class="conference-block">
+        <h2 class="conference-title nfc">National Football Conference (NFC)</h2>
+        <div class="divisions-grid">
+            {% for div in page.get_divisions %}
+                <div class="division-card">
+                    <h3>NFC {{ div }}</h3>
+                    <ul>
+                        {% for team in page.get_children.live.specific %}
+                            {% if team.conference == "NFC" and team.division == div %}
+                                <li>
+                                    <a href="{% pageurl team %}">
+                                        {% if team.logo %}
+                                            {% image team.logo fill-30x30 alt=team.title %}
+                                        {% endif %}
+                                        {{ team.title }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

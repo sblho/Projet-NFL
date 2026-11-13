@@ -1,0 +1,1800 @@
+/* ==========================================
+   1. RESET & VARIABLES GLOBALES
+   ========================================== */
+:root {
+    --nfl-blue: #013369;
+    --nfl-red: #d50a0a;
+    --dark-bg: #1a1d20;
+    --light-bg: #f4f6f9;
+    --text-dark: #2b2b2b;
+    --text-light: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+/* ==========================================
+   2. HEADER & NAVIGATION
+   ========================================== */
+.site-header {
+    background-color: var(--nfl-blue);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    width: 100%;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px; /* Élargit le conteneur pour repousser les éléments vers les bords */
+    margin: 0 auto;
+    padding: 0.75rem 2rem; /* Légère marge interne sur les côtés */
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo img {
+    height: 75px; /* Augmente la taille du logo pour meilleure visibilité */
+    width: auto;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.25)); /* Halo lumineux pour détacher l'écusson du bleu */
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.06);
+    filter: drop-shadow(0 4px 8px rgba(255, 255, 255, 0.4));
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem; /* Espacement un peu plus aéré entre les onglets */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: var(--nfl-red);
+}
+
+/* ==========================================
+   3. SECTIONS PRINCIPALES
+   ========================================== */
+main {
+    min-height: 60vh;
+}
+
+.hero-section {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+/* ==========================================
+   4. FOOTER
+   ========================================== */
+.site-footer {
+    background-color: var(--dark-bg);
+    color: #ffffff;
+    padding: 2.5rem 1.5rem;
+    margin-top: 3rem;
+    width: 100%;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    text-align: center;
+}
+
+.social-links {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+}
+
+.social-links a {
+    color: #ffffff;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-links a:hover {
+    color: var(--nfl-red);
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0 0;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* ==========================================
+   5. RESPONSIVE MOBILE
+   ========================================== */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .logo img {
+        height: 42px;
+    }
+
+    .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* ==========================================
+   5. PAGE ÉQUIPES (AFC / NFC)
+   ========================================== */
+.teams-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+}
+
+.page-title {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.page-title h1 {
+    font-size: 2.25rem;
+    color: var(--nfl-blue);
+    margin-bottom: 0.5rem;
+}
+
+.conference-block {
+    margin-bottom: 3.5rem;
+}
+
+.conference-title {
+    font-size: 1.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+}
+
+.conference-title.afc {
+    background-color: var(--nfl-red); /* Rouge pour l'AFC */
+}
+
+.conference-title.nfc {
+    background-color: var(--nfl-blue); /* Bleu pour la NFC */
+}
+
+.divisions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.division-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    border-top: 4px solid var(--dark-bg);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.division-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.division-card h3 {
+    font-size: 1.15rem;
+    color: var(--dark-bg);
+    border-bottom: 2px solid var(--light-bg);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.division-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.division-card li {
+    margin-bottom: 0.6rem;
+}
+
+.division-card a {
+    color: var(--text-dark);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.division-card a:hover {
+    color: var(--nfl-red);
+}
+
+/* ==========================================
+   7. FLUX RSS ET EMBEDS NFL.COM
+   ========================================== */
+.nfl-news-section, .nfl-embeds-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--light-bg);
+}
+
+.nfl-news-section h2, .nfl-embeds-section h2 {
+    font-size: 1.35rem;
+    color: var(--nfl-blue);
+    margin-bottom: 1.25rem;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.news-card {
+    background-color: var(--light-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--nfl-red);
+    transition: transform 0.2s ease;
+}
+
+.news-card:hover {
+    transform: translateY(-2px);
+}
+
+.news-card h3 {
+    font-size: 0.95rem;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.4;
+}
+
+.news-card a {
+    color: var(--dark-bg);
+    text-decoration: none;
+}
+
+.news-card a:hover {
+    color: var(--nfl-red);
+}
+
+.news-date {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+.embed-block {
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+/* ==========================================
+   FICHE ÉQUIPE INDIVIDUELLE (TeamPage)
+   ========================================== */
+.team-detail-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+}
+
+.team-header {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+    border-left: 6px solid var(--nfl-blue);
+}
+
+.team-header-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.team-logo-box {
+    width: 140px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--light-bg);
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.team-logo-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.team-main-info h1 {
+    font-size: 2.25rem;
+    color: var(--dark-bg);
+    margin: 0.5rem 0;
+}
+
+.team-tags {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.badge.afc {
+    background-color: var(--nfl-red);
+    color: #ffffff;
+}
+
+.badge.nfc {
+    background-color: var(--nfl-blue);
+    color: #ffffff;
+}
+
+.badge.division {
+    background-color: var(--light-bg);
+    color: var(--text-dark);
+}
+
+.btn-nfl-link {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--nfl-blue);
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-nfl-link:hover {
+    background-color: var(--nfl-red);
+    transform: translateY(-2px);
+}
+
+.team-content-body {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.back-link {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--light-bg);
+}
+
+.btn-back {
+    display: inline-block;
+    color: var(--nfl-blue);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-back:hover {
+    color: var(--nfl-red);
+}
+/* ==========================================
+   TABLEAU DE BORD ACCUEIL (HOME DASHBOARD)
+   ========================================== */
+.home-hero {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.home-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 0.5rem;
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    color: var(--dark-bg);
+}
+
+.see-all {
+    color: var(--nfl-blue);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.see-all:hover {
+    color: var(--nfl-red);
+}
+
+/* Grille scores compacts */
+.mini-games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.mini-game-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-top: 3px solid var(--nfl-blue);
+}
+
+.mini-status {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #777;
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+}
+
+.mini-matchup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mini-team {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.95rem;
+}
+
+.mini-team img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+.vs {
+    color: #999;
+    font-size: 0.8rem;
+}
+
+/* Colonnes Classement & News */
+.dashboard-columns {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 2rem;
+}
+
+@media (max-width: 900px) {
+    .dashboard-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+.standings-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+@media (max-width: 600px) {
+    .standings-split {
+        grid-template-columns: 1fr;
+    }
+}
+
+.conf-table-box {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.conf-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.85rem;
+    margin: 0 0 0.75rem 0;
+}
+
+.conf-badge.afc { background-color: var(--nfl-red); }
+.conf-badge.nfc { background-color: var(--nfl-blue); }
+
+.mini-standings-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.mini-standings-table th, .mini-standings-table td {
+    padding: 0.45rem 0.3rem;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.mini-standings-table th:first-child, .mini-standings-table td:first-child {
+    text-align: left;
+}
+
+.team-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+}
+
+.team-cell img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* Liste Actualités Accueil */
+.home-news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.home-news-item {
+    background: #ffffff;
+    padding: 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-dark);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 3px solid var(--nfl-red);
+    transition: transform 0.15s ease;
+}
+
+.home-news-item:hover {
+    transform: translateX(4px);
+}
+
+.home-news-item h4 {
+    margin: 0 0 0.35rem 0;
+    font-size: 0.95rem;
+    color: var(--nfl-blue);
+}
+
+.home-news-item span {
+    font-size: 0.75rem;
+    color: #777;
+}
+/* ==========================================
+   SECTIONS SAISONS & SCOREBOARD
+   ========================================== */
+.seasons-container, .season-detail-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+}
+
+.seasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.season-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    text-decoration: none;
+    color: var(--text-dark);
+    border-top: 4px solid var(--nfl-blue);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.season-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.season-badge, .week-badge {
+    display: inline-block;
+    width: fit-content;
+    background-color: var(--nfl-red);
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.25rem 0.7rem;
+    border-radius: 20px;
+}
+
+.season-link {
+    color: var(--nfl-blue);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.game-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 1.25rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    border-left: 4px solid var(--nfl-blue);
+}
+
+.game-card.completed {
+    border-left-color: #2e7d32;
+}
+
+.game-status {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #666;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+}
+
+.team-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+}
+
+.team-row:first-of-type {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.team-info {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 600;
+}
+
+.mini-logo {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+}
+
+.team-score {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--dark-bg);
+}
+/* ==========================================
+   SÉLECTEUR DE SEMAINE & CLASSEMENTS SAISON
+   ========================================== */
+.week-selector-bar {
+    background: #ffffff;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin: 1.5rem 0 2rem 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.selector-label {
+    font-weight: 700;
+    color: var(--dark-bg);
+    font-size: 0.9rem;
+}
+
+.week-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.week-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    background-color: #f0f2f5;
+    color: var(--text-dark);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: all 0.15s ease;
+}
+
+.week-pill:hover {
+    background-color: var(--nfl-blue);
+    color: #ffffff;
+}
+
+.week-pill.active {
+    background-color: var(--nfl-red);
+    color: #ffffff;
+}
+
+/* Classements par division */
+.full-standings-section {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e0e0e0;
+}
+
+.conferences-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 900px) {
+    .conferences-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+.conf-header {
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    color: #ffffff;
+    margin: 0 0 1rem 0;
+    font-size: 1.15rem;
+}
+
+.conf-header.afc { background-color: var(--nfl-red); }
+.conf-header.nfc { background-color: var(--nfl-blue); }
+
+.divisions-standings-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.division-table-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.division-table-card h4 {
+    margin: 0 0 0.75rem 0;
+    color: var(--dark-bg);
+    font-size: 0.95rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.4rem;
+}
+/* ==========================================
+   SÉLECTEURS SEMAINES & PLAYOFFS (SeasonPage)
+   ========================================== */
+
+.weeks-selector,
+.playoffs-selector {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1.25rem auto;
+    max-width: 1100px;
+}
+
+.week-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.9rem;
+    background-color: #ffffff;
+    color: #013369;
+    border: 1.5px solid #d0d7de;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.week-btn:hover {
+    background-color: #013369;
+    color: #ffffff;
+    border-color: #013369;
+    transform: translateY(-1px);
+}
+
+/* Bouton de la semaine ou du tour actif */
+.week-btn.active {
+    background-color: #013369;
+    color: #ffffff;
+    border-color: #013369;
+    box-shadow: 0 3px 8px rgba(1, 51, 105, 0.25);
+}
+
+/* Style distinctif pour les tours de Playoffs & Super Bowl */
+.playoffs-selector {
+    padding-top: 0.75rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.playoff-btn {
+    border-color: #d50a0a;
+    color: #d50a0a;
+}
+
+.playoff-btn:hover,
+.playoff-btn.active {
+    background-color: #d50a0a;
+    color: #ffffff;
+    border-color: #d50a0a;
+    box-shadow: 0 3px 8px rgba(213, 10, 10, 0.25);
+}
+/* ==========================================
+   FICHE DÉTAILLÉE ÉQUIPE (TeamPage)
+   ========================================== */
+
+.team-detail-container {
+    max-width: 1150px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.team-hero-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    border-top: 5px solid #013369;
+    margin-bottom: 2rem;
+}
+
+.team-hero-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.team-hero-logo {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+}
+
+.team-badges {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+}
+
+.badge-conf,
+.badge-div {
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.badge-conf.afc { background: #d50a0a; color: #fff; }
+.badge-conf.nfc { background: #013369; color: #fff; }
+.badge-div { background: #e2e8f0; color: #1e293b; }
+
+.team-location {
+    color: #64748b;
+    margin: 0.25rem 0 0;
+    font-weight: 500;
+}
+
+.btn-nfl-official {
+    background: #013369;
+    color: #ffffff;
+    padding: 0.7rem 1.25rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btn-nfl-official:hover {
+    background: #d50a0a;
+}
+
+/* Grille Staff & Stade */
+.team-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.info-card {
+    background: #ffffff;
+    padding: 1.75rem;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.info-card h2 {
+    margin-top: 0;
+    font-size: 1.25rem;
+    color: #013369;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0.75rem;
+}
+
+.team-specs-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.team-specs-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.team-specs-list li:last-child {
+    border-bottom: none;
+}
+
+.team-specs-list span {
+    color: #64748b;
+}
+
+.stadium-photo img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 0.9rem;
+}
+
+.stadium-details h3 {
+    margin: 0 0 0.25rem;
+    color: #0f172a;
+}
+
+.stadium-details p {
+    margin: 0;
+    color: #475569;
+}
+
+/* Joueurs Clés */
+.team-section {
+    margin-bottom: 2.5rem;
+}
+
+.team-section h2 {
+    color: #013369;
+    margin-bottom: 1.25rem;
+}
+
+.key-players-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.25rem;
+}
+
+.player-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border-bottom: 4px solid #013369;
+    transition: transform 0.2s;
+}
+
+.player-card:hover {
+    transform: translateY(-3px);
+}
+
+.player-photo-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1rem;
+}
+
+.player-photo,
+.player-placeholder {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border: 3px solid #e2e8f0;
+}
+
+.player-number {
+    position: absolute;
+    bottom: 0;
+    right: -4px;
+    background: #d50a0a;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 0.2rem 0.45rem;
+    border-radius: 999px;
+}
+
+.player-pos {
+    display: inline-block;
+    background: #eff6ff;
+    color: #013369;
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 4px;
+    margin-bottom: 0.35rem;
+}
+
+.player-info h3 {
+    margin: 0.2rem 0 0.4rem;
+    font-size: 1.1rem;
+    color: #0f172a;
+}
+
+.player-info p {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.team-description-box {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+.team-news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.25rem;
+}
+.team-news-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #ffffff;
+    padding: 1.25rem;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid #d50a0a;
+    text-decoration: none;
+    color: #0f172a;
+    transition: transform 0.2s;
+}
+.team-news-card:hover {
+    transform: translateY(-3px);
+}
+.team-news-card h4 {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+.team-news-card span {
+    color: #013369;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+/* ==========================================
+   RUBRIQUE HISTOIRE & ARTICLES
+   ========================================== */
+
+.history-container {
+    max-width: 1150px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.history-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.history-header h1 {
+    color: #013369;
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.history-intro {
+    max-width: 720px;
+    margin: 0 auto 1.5rem;
+    color: #475569;
+}
+
+.history-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+}
+
+.filter-pill {
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #013369;
+    border: 1.5px solid #cbd5e1;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.filter-pill:hover,
+.filter-pill.active {
+    background: #013369;
+    color: #ffffff;
+    border-color: #013369;
+}
+
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.75rem;
+}
+
+.article-card {
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease;
+}
+
+.article-card:hover {
+    transform: translateY(-4px);
+}
+
+.article-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.article-card-image {
+    position: relative;
+    height: 200px;
+    background: #e2e8f0;
+}
+
+.article-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.article-image-placeholder {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+.article-cat-badge {
+    display: inline-block;
+    padding: 0.3rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: #013369;
+    color: #ffffff;
+}
+
+.article-card-image .article-cat-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+}
+
+.article-cat-badge.cat-legendes { background: #d50a0a; }
+.article-cat-badge.cat-moments { background: #0f766e; }
+
+.article-card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.article-card-body h2 {
+    margin: 0 0 0.65rem;
+    font-size: 1.25rem;
+    color: #0f172a;
+}
+
+.article-card-body p {
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin: 0 0 1.25rem;
+    flex-grow: 1;
+}
+
+.read-more {
+    color: #d50a0a;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* Page Article Individuel */
+.article-detail-container {
+    max-width: 820px;
+    margin: 2.5rem auto;
+    padding: 2.5rem;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+}
+
+.article-detail-header h1 {
+    font-size: 2.2rem;
+    color: #0f172a;
+    margin: 0.75rem 0;
+}
+
+.article-lead {
+    font-size: 1.15rem;
+    color: #475569;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.article-date {
+    display: block;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-bottom: 1.5rem;
+}
+
+.article-cover {
+    margin: 0 0 2rem;
+}
+
+.article-cover img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+.article-content {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #1e293b;
+}
+
+.no-articles {
+    text-align: center;
+    color: #64748b;
+    padding: 3rem 1rem;
+}
+/* ==========================================
+   PAGE CONTACT (ContactPage)
+   ========================================== */
+
+.contact-container {
+    max-width: 720px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+}
+
+.contact-card {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    border-top: 5px solid #013369;
+}
+
+.contact-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.contact-header h1 {
+    color: #013369;
+    margin: 0 0 0.5rem;
+    font-size: 2rem;
+}
+
+.contact-intro {
+    color: #475569;
+    line-height: 1.6;
+}
+
+.nfl-contact-form .form-group {
+    margin-bottom: 1.35rem;
+}
+
+.nfl-contact-form label {
+    display: block;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.45rem;
+    font-size: 0.95rem;
+}
+
+.required-star {
+    color: #d50a0a;
+    margin-left: 2px;
+}
+
+.nfl-contact-form input[type="text"],
+.nfl-contact-form input[type="email"],
+.nfl-contact-form input[type="number"],
+.nfl-contact-form input[type="url"],
+.nfl-contact-form select,
+.nfl-contact-form textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background-color: #f8fafc;
+    transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+}
+
+.nfl-contact-form input:focus,
+.nfl-contact-form select:focus,
+.nfl-contact-form textarea:focus {
+    outline: none;
+    border-color: #013369;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(1, 51, 105, 0.12);
+}
+
+.nfl-contact-form textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.form-help {
+    display: block;
+    color: #64748b;
+    font-size: 0.82rem;
+    margin-top: 0.3rem;
+}
+
+.form-error {
+    display: block;
+    color: #d50a0a;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 0.35rem;
+}
+
+.rgpd-text {
+    font-size: 0.82rem;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    line-height: 1.5;
+}
+
+.btn-submit-contact {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    background: #013369;
+    color: #ffffff;
+    border: none;
+    padding: 0.9rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s, transform 0.1s;
+    box-sizing: border-box;
+}
+
+.btn-submit-contact:hover {
+    background: #d50a0a;
+}
+
+/* Carte de confirmation */
+.contact-success-card {
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.success-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.contact-success-card h1 {
+    color: #013369;
+    margin-bottom: 1rem;
+}
+
+.thank-you-body {
+    color: #475569;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+/* ==========================================
+   PAGES LÉGALES (StandardPage)
+   ========================================== */
+
+.legal-container {
+    max-width: 850px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+}
+
+.legal-card {
+    background: #ffffff;
+    padding: 2.5rem 3rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    border-top: 5px solid #013369;
+}
+
+.legal-header {
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.legal-header h1 {
+    color: #013369;
+    margin: 0 0 0.4rem;
+    font-size: 2rem;
+}
+
+.legal-updated {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.legal-body {
+    color: #1e293b;
+    line-height: 1.75;
+    font-size: 1rem;
+}
+
+.legal-body h2,
+.legal-body h3 {
+    color: #013369;
+    margin-top: 1.75rem;
+}
+
+.hero-logo-title {
+    margin: 0 auto 1rem;
+    line-height: 1;
+}
+
+.hero-logo {
+    max-width: 280px;
+    width: 100%;
+    height: auto;
+    display: inline-block;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.12));
+}
+
+@media (max-width: 600px) {
+    .hero-logo {
+        max-width: 210px;
+    }
+}
+
+/* Lien d'évitement (visible uniquement au clavier) */
+.skip-link {
+    position: absolute;
+    top: -50px;
+    left: 1rem;
+    background: #013369;
+    color: #ffffff;
+    padding: 0.6rem 1rem;
+    border-radius: 0 0 8px 8px;
+    font-weight: 600;
+    text-decoration: none;
+    z-index: 9999;
+    transition: top 0.2s;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Contour visible lors de la navigation au clavier */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid #d50a0a;
+    outline-offset: 2px;
+}
+/* ==========================================
+   ROSTER D'ÉQUIPE
+   ========================================== */
+
+.team-roster-section {
+    margin-top: 2.5rem;
+}
+
+.roster-filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.roster-filter-btn {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #1e293b;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.roster-filter-btn.active,
+.roster-filter-btn:hover {
+    background: #013369;
+    border-color: #013369;
+    color: #ffffff;
+}
+
+.roster-group-box {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.roster-group-box h3 {
+    color: #013369;
+    margin: 0 0 1rem;
+    font-size: 1.15rem;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.roster-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+}
+
+.roster-table th {
+    text-align: left;
+    padding: 0.65rem 0.75rem;
+    border-bottom: 2px solid #e2e8f0;
+    color: #475569;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.roster-table td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.jersey-num {
+    font-weight: 700;
+    color: #64748b;
+    width: 45px;
+}
+
+.player-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.player-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #e2e8f0;
+}
+
+.pos-badge {
+    display: inline-block;
+    background: #eff6ff;
+    color: #013369;
+    font-weight: 700;
+    font-size: 0.78rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+}
+.pos-badge {
+    display: inline-block;
+    background: #eff6ff;
+    color: #013369;
+    font-weight: 700;
+    font-size: 0.78rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+}
+
+/* ==========================================
+   DEPTH CHART D'ÉQUIPE
+   ========================================== */
+
+.team-depth-chart-section {
+    margin-top: 2.5rem;
+}
+
+.depth-chart-box {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.depth-chart-box h3 {
+    color: #013369;
+    margin: 0 0 1rem;
+    font-size: 1.15rem;
+}
+
+.depth-chart-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.depth-chart-table th {
+    text-align: left;
+    padding: 0.65rem 0.75rem;
+    border-bottom: 2px solid #e2e8f0;
+    color: #475569;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.depth-chart-table td,
+.depth-chart-table tbody th {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.dc-pos-cell {
+    width: 75px;
+    font-weight: 700;
+}
+
+.dc-starter {
+    font-weight: 700;
+    color: #0f172a;
+    background: #f8fafc;
+}
+
+.dc-backup {
+    color: #334155;
+}
+
+.dc-jersey {
+    color: #64748b;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-right: 0.25rem;
+}
+
+.dc-empty {
+    color: #94a3b8;
+}

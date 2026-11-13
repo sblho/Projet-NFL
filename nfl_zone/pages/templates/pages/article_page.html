@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block title %}{% firstof page.seo_title page.title %}{% endblock %}
+
+{% block content %}
+<article class="article-detail-container">
+    <header class="article-detail-header">
+        <span class="article-cat-badge cat-{{ page.categorie }}">
+            {{ page.get_categorie_display }}
+        </span>
+        <h1>{{ page.title }}</h1>
+        {% if page.chapeau %}
+            <p class="article-lead">{{ page.chapeau }}</p>
+        {% endif %}
+        {% if page.first_published_at %}
+            <time class="article-date">Publié le {{ page.first_published_at|date:"d F Y" }}</time>
+        {% endif %}
+    </header>
+
+    {% if page.image_couverture %}
+        <figure class="article-cover">
+            {% image page.image_couverture width-1100 %}
+        </figure>
+    {% endif %}
+
+    <div class="article-content richtext-content">
+        {{ page.body|richtext }}
+    </div>
+
+    <div class="back-link-wrapper">
+        <a href="{{ page.get_parent.url }}" class="back-link">← Retour à la rubrique Histoire</a>
+    </div>
+</article>
+{% endblock %}

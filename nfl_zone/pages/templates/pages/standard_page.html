@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block title %}{{ page.title }} — NFL Zone{% endblock %}
+
+{% block content %}
+<div class="legal-container">
+    <article class="legal-card">
+        <header class="legal-header">
+            <h1>{{ page.title }}</h1>
+            {% if page.last_updated %}
+                <p class="legal-updated">Dernière mise à jour : {{ page.last_updated|date:"d F Y" }}</p>
+            {% endif %}
+        </header>
+
+        <div class="legal-body richtext-content">
+            {{ page.body|richtext }}
+        </div>
+    </article>
+</div>
+{% endblock %}

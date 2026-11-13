@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block title %}{{ page.title }} — NFL Zone{% endblock %}
+
+{% block content %}
+<div class="contact-container">
+    <div class="contact-card">
+        <header class="contact-header">
+            <h1>✉️ {{ page.title }}</h1>
+            {% if page.intro %}
+                <div class="contact-intro">{{ page.intro|richtext }}</div>
+            {% endif %}
+        </header>
+
+        <form action="{% pageurl page %}" method="POST" class="nfl-contact-form">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                        {% if field.field.required %}<span class="required-star">*</span>{% endif %}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.help_text %}
+                        <small class="form-help">{{ field.help_text }}</small>
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                        <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            {% if page.rgpd_notice %}
+                <p class="rgpd-text">🔒 {{ page.rgpd_notice }}</p>
+            {% endif %}
+
+            <button type="submit" class="btn-submit-contact">
+                Envoyer le message →
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block title %}{% firstof page.seo_title page.title %}{% endblock %}
+
+{% block content %}
+<div class="team-detail-container">
+    <!-- EN-TÊTE DE LA FRANCHISE -->
+    <header class="team-hero-card">
+        <div class="team-hero-left">
+            {% if page.logo %}
+                {% image page.logo fill-140x140 class="team-hero-logo" %}
+            {% endif %}
+            <div>
+                <div class="team-badges">
+                    <span class="badge-conf {{ page.conference|lower }}">{{ page.conference }}</span>
+                    <span class="badge-div">Division {{ page.division }}</span>
+                </div>
+                <h1>{{ page.title }}</h1>
+                {% if page.ville %}
+                    <p class="team-location">📍 {{ page.ville }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% if page.nfl_official_url %}
+            <a href="{{ official_url }}" target="_blank" rel="noopener noreferrer" class="btn-nfl-official">
+    Site officiel NFL.com ↗
+            </a>
+        {% endif %}
+    </header>
+
+    <!-- FICHE D'IDENTITÉ, STAFF & STADE -->
+    <section class="team-info-grid">
+        <!-- Carte Staff & Identité -->
+        <div class="info-card">
+            <h2>🏛️ Franchise & Staff</h2>
+            <ul class="team-specs-list">
+                {% if page.entraineur_principal %}
+                    <li>
+                        <span>Entraîneur principal</span>
+                        <strong>{{ page.entraineur_principal }}</strong>
+                    </li>
+                {% endif %}
+                {% if page.annee_creation %}
+                    <li>
+                        <span>Fondation</span>
+                        <strong>{{ page.annee_creation }}</strong>
+                    </li>
+                {% endif %}
+                {% if page.super_bowls %}
+                    <li>
+                        <span>🏆 Super Bowls</span>
+                        <strong>{{ page.super_bowls }}</strong>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Carte Stade -->
+        {% if page.stade_nom or page.stade_image %}
+        <div class="info-card stadium-card">
+            <h2>🏟️ Le Stade</h2>
+            {% if page.stade_image %}
+                <div class="stadium-photo">
+                    {% image page.stade_image fill-600x260 %}
+                </div>
+            {% endif %}
+            <div class="stadium-details">
+                {% if page.stade_nom %}
+                    <h3>{{ page.stade_nom }}</h3>
+                {% endif %}
+                {% if page.stade_capacite %}
+                    <p>Capacité : <strong>{{ page.stade_capacite }} places</strong></p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- JOUEURS CLÉS (InlinePanel) -->
+    {% if page.key_players.all %}
+    <section class="team-section">
+        <h2>⭐ Joueurs Clés</h2>
+        <div class="key-players-grid">
+            {% for player in page.key_players.all %}
+                <div class="player-card">
+                    <div class="player-photo-wrapper">
+                        {% if player.photo %}
+                            {% image player.photo fill-160x160 class="player-photo" %}
+                        {% else %}
+                            <div class="player-placeholder">🏈</div>
+                        {% endif %}
+                        {% if player.numero is not None %}
+                            <span class="player-number">#{{ player.numero }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="player-info">
+                        <span class="player-pos">{{ player.poste }}</span>
+                        <h3>{{ player.nom }}</h3>
+                        {% if player.bio_courte %}
+                            <p>{{ player.bio_courte }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- PRÉSENTATION / HISTOIRE DE L'ÉQUIPE -->
+    {% if page.description %}
+    <section class="team-section team-description-box">
+        <h2>📖 Présentation de la franchise</h2>
+        <div class="richtext-content">
+            {{ page.description|richtext }}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- MÉDIAS INTÉGRÉS (StreamField) -->
+    {% if page.media_embeds %}
+    <section class="team-section">
+        <h2>🎬 Vidéos & Médias</h2>
+        <div class="team-embeds">
+            {% for block in page.media_embeds %}
+                <div class="embed-block-item">
+                    {% include_block block %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- ACTUALITÉS RSS DE L'ÉQUIPE -->
+    {% if news_items %}
+    <section class="team-section">
+        <h2>⚡ Actualités de la franchise</h2>
+        <div class="team-news-grid">
+            {% for item in news_items %}
+                <a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="team-news-card">
+                    <h3>{{ item.title }}</h3>
+                    <span>Lire l'article →</span>
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- DEPTH CHART -->
+    {% if depth_chart %}
+    <section class="team-depth-chart-section">
+        <div class="section-header">
+            <h2>📊 Depth Chart (Titulaires &amp; Remplaçants)</h2>
+        </div>
+
+        <div class="depth-chart-grid">
+            {% for block in depth_chart %}
+                <div class="depth-chart-box">
+                    <h3>{{ block.unit }}</h3>
+                    <div class="table-responsive">
+                        <table class="depth-chart-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Poste</th>
+                                    <th scope="col">Titulaire (1er)</th>
+                                    <th scope="col">2e</th>
+                                    <th scope="col">3e</th>
+                                    <th scope="col">4e</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in block.rows %}
+                                    <tr>
+                                        <th scope="row" class="dc-pos-cell" title="{{ row.label }}">
+                                            <span class="pos-badge">{{ row.abbr }}</span>
+                                        </th>
+                                        {% for player in row.slots %}
+                                            <td class="{% if forloop.first %}dc-starter{% else %}dc-backup{% endif %}">
+                                                {% if player %}
+                                                    {% if player.jersey %}
+                                                        <span class="dc-jersey">#{{ player.jersey }}</span>
+                                                    {% endif %}
+                                                    <span>{{ player.name }}</span>
+                                                {% else %}
+                                                    <span class="dc-empty">-</span>
+                                                {% endif %}
+                                            </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- EFFECTIF OFFICIEL (ROSTER) -->
+    {% if roster %}
+    <section class="team-roster-section">
+        <div class="section-header">
+            <h2>📋 Effectif Officiel (Roster)</h2>
+            <div class="roster-filters" role="group" aria-label="Filtrer l'effectif par escouade">
+                <button type="button" class="roster-filter-btn active" data-group="all">Tout</button>
+                {% for section in roster %}
+                    <button type="button" class="roster-filter-btn" data-group="{{ section.group|slugify }}">
+                        {{ section.group }}
+                    </button>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% for section in roster %}
+            <div class="roster-group-box" data-roster-group="{{ section.group|slugify }}">
+                <h3>{{ section.group }} ({{ section.players|length }})</h3>
+                <div class="table-responsive">
+                    <table class="roster-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Joueur</th>
+                                <th scope="col">Poste</th>
+                                <th scope="col">Âge</th>
+                                <th scope="col">Taille / Poids</th>
+                                <th scope="col">Exp.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for player in section.players %}
+                                <tr>
+                                    <td class="jersey-num">{{ player.jersey }}</td>
+                                    <td class="player-cell">
+                                        {% if player.headshot %}
+                                            <img src="{{ player.headshot }}" alt="" class="player-avatar" loading="lazy">
+                                        {% endif %}
+                                        <strong>{{ player.name }}</strong>
+                                    </td>
+                                    <td><span class="pos-badge">{{ player.position }}</span></td>
+                                    <td>{{ player.age }}</td>
+                                    <td>{{ player.height }} • {{ player.weight }}</td>
+                                    <td>{{ player.experience }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+
+    <script>
+    document.querySelectorAll('.roster-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.roster-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const target = btn.dataset.group;
+            document.querySelectorAll('.roster-group-box').forEach(box => {
+                box.style.display = (target === 'all' || box.dataset.rosterGroup === target) ? 'block' : 'none';
+            });
+        });
+    });
+    </script>
+    {% endif %}
+
+    <div class="back-link-wrapper">
+        <a href="{{ page.get_parent.url }}" class="back-link">← Toutes les franchises</a>
+    </div>
+</div>
+{% endblock %}
