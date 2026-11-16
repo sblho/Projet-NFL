@@ -1797,4 +1797,258 @@ textarea:focus-visible {
 
 .dc-empty {
     color: #94a3b8;
+}/* ==========================================
+   STATISTIQUES MULTI-SAISONS & ARCHIVES (2015-2026)
+   ========================================== */
+.stats-header-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    text-align: left;
+}
+
+.stats-header-bar h1,
+.stats-header-bar h2 {
+    margin: 0;
+}
+
+.stats-section-title {
+    color: var(--nfl-blue, #013369);
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--nfl-red, #d50a0a);
+    padding-left: 0.75rem;
+}
+
+.stats-sub-title {
+    color: #1e293b;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 1.75rem 0 0.75rem;
+}
+
+.stats-empty {
+    color: #475569;
+    background: #ffffff;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Sélecteur d'années (cibles tactiles >= 44px WCAG) */
+.season-switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.season-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 0.58rem;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: var(--nfl-blue, #013369);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.season-pill:hover {
+    background: #f1f5f9;
+}
+
+.season-pill.active {
+    background: var(--nfl-blue, #013369);
+    border-color: var(--nfl-blue, #013369);
+    color: #ffffff;
+}
+
+/* Cartes KPI collectives */
+.stats-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+    gap: 0.85rem;
+}
+
+.stat-kpi-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.stat-kpi-label {
+    font-size: 0.76rem;
+    color: #475569;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.stat-kpi-value {
+    font-size: 1.35rem;
+    color: var(--nfl-blue, #013369);
+    font-weight: 800;
+}
+
+.stat-kpi-sub {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.text-pos {
+    color: #15803d;
+    font-weight: 700;
+}
+
+.text-neg {
+    color: #b91c1c;
+    font-weight: 700;
+}
+
+/* Tableaux de statistiques */
+.nfl-stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    text-align: left;
+    white-space: nowrap;
+    background: #ffffff;
+}
+
+.nfl-stats-table th {
+    background-color: var(--nfl-blue, #013369);
+    color: #ffffff;
+    font-weight: 700;
+    padding: 0.75rem 0.9rem;
+}
+
+.nfl-stats-table td {
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid #e2e8f0;
+    color: #1e293b;
+}
+
+.nfl-stats-table tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+/* Boxscores & Leaders */
+.boxscores-grid,
+.leaders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1rem;
+}
+
+.boxscore-card,
+.leader-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.boxscore-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: #475569;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.boxscore-status {
+    background: var(--nfl-blue, #013369);
+    color: #ffffff;
+    padding: 0.1rem 0.45rem;
+    border-radius: 4px;
+}
+
+.boxscore-team-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.35rem 0;
+    font-size: 1rem;
+}
+
+.boxscore-team-link {
+    color: #0f172a;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.boxscore-team-link:hover {
+    text-decoration: underline;
+    color: var(--nfl-blue, #013369);
+}
+
+.boxscore-score {
+    font-size: 1.15rem;
+    color: var(--nfl-blue, #013369);
+}
+
+.boxscore-metrics {
+    margin-top: 0.75rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid #e2e8f0;
+    font-size: 0.82rem;
+    color: #334155;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.boxscore-mvp {
+    margin: 0.65rem 0 0;
+    font-size: 0.8rem;
+    color: #475569;
+    background: #f8fafc;
+    padding: 0.45rem 0.6rem;
+    border-radius: 4px;
+}
+
+.leader-card h3 {
+    color: var(--nfl-blue, #013369);
+    font-size: 1rem;
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--nfl-red, #d50a0a);
+}
+
+.leader-list {
+    list-style: decimal inside;
+    margin: 0;
+    padding: 0;
+}
+
+.leader-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.88rem;
+}
+
+.leader-val {
+    font-weight: 700;
+    color: var(--nfl-blue, #013369);
+}
+
+.leader-val {
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 0.5rem;
 }

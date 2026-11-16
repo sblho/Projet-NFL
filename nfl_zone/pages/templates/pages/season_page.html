@@ -1,52 +1,75 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags %}
 
+{% block title %}{% firstof page.seo_title page.title %}{% endblock %}
+
 {% block content %}
 <section class="season-detail-container">
+    <!-- EN-TÊTE & SÉLECTEUR D'ARCHIVES (2015-2016 À 2026-2027) -->
     <div class="page-title">
-        <h1>{{ page.title }}</h1>
-        {% if current_week %}
-            <span class="week-badge">Semaine {{ current_week }}</span>
-        {% endif %}
+        <div class="stats-header-bar">
+            <div>
+                <h1>Archives NFL — Saison {{ selected_season }}-{{ selected_season|add:1 }}</h1>
+                {% if current_week %}
+                    <span class="week-badge">
+                        {% if season_type == '3' %}Playoffs • Tour {{ current_week }}{% else %}Semaine {{ current_week }}{% endif %}
+                    </span>
+                {% endif %}
+            </div>
+
+            {% if available_seasons|length > 1 %}
+            <nav class="season-switcher" aria-label="Archives des saisons NFL">
+                {% for year in available_seasons %}
+                <a href="?season={{ year }}"
+                   class="season-pill {% if year == selected_season %}active{% endif %}"
+                   {% if year == selected_season %}aria-current="page"{% endif %}>
+                    {{ year }}-{{ year|add:1 }}
+                </a>
+                {% endfor %}
+            </nav>
+            {% endif %}
+        </div>
+
         {% if page.intro %}
             <div class="intro-text">{{ page.intro|richtext }}</div>
         {% endif %}
     </div>
 
-    
-    <!-- Navigation Saison Régulière (Semaines 1 à 18) -->
-<div class="weeks-selector">
-    {% for w in weeks_range %}
-        <a href="?type=2&week={{ w }}" 
-           class="week-btn {% if season_type == '2' and current_week == w %}active{% endif %}">
-            Sem. {{ w }}
-        </a>
-    {% endfor %}
-</div>
+    <!-- NAVIGATION SAISON RÉGULIÈRE (SEMAINES 1 À 18) -->
+    <nav class="weeks-selector" aria-label="Semaines de la saison régulière">
+        {% for w in weeks_range %}
+            <a href="?season={{ selected_season }}&type=2&week={{ w }}"
+               class="week-btn {% if season_type == '2' and current_week == w %}active{% endif %}"
+               {% if season_type == '2' and current_week == w %}aria-current="page"{% endif %}>
+                Sem. {{ w }}
+            </a>
+        {% endfor %}
+    </nav>
 
-<!-- Navigation Playoffs & Super Bowl -->
-<div class="playoffs-selector" style="margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-    {% for round in playoff_rounds %}
-        <a href="?type=3&week={{ round.week }}" 
-           class="week-btn playoff-btn {% if season_type == '3' and current_week == round.week %}active{% endif %}">
-            {{ round.label }}
-        </a>
-    {% endfor %}
-</div>
+    <!-- NAVIGATION PLAYOFFS & SUPER BOWL -->
+    <nav class="playoffs-selector" aria-label="Tours des Playoffs" style="margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        {% for round in playoff_rounds %}
+            <a href="?season={{ selected_season }}&type=3&week={{ round.week }}"
+               class="week-btn playoff-btn {% if season_type == '3' and current_week == round.week %}active{% endif %}"
+               {% if season_type == '3' and current_week == round.week %}aria-current="page"{% endif %}>
+                {{ round.label }}
+            </a>
+        {% endfor %}
+    </nav>
 
-    <!-- SCOREBOARD DE LA SEMAINE -->
+    <!-- 1. SCOREBOARD DE LA SEMAINE (API ESPN) -->
     <div class="scoreboard-section">
-        <h2>🏈 Matchs & Scores — Semaine {{ current_week }}</h2>
+        <h2>🏈 Matchs &amp; Scores — Semaine {{ current_week }}</h2>
         {% if games %}
             <div class="games-grid">
                 {% for game in games %}
-                    <div class="game-card {% if game.completed %}completed{% endif %}">
+                    <article class="game-card {% if game.completed %}completed{% endif %}">
                         <div class="game-status">{{ game.status }}</div>
-                        
+
                         <div class="team-row">
                             <div class="team-info">
                                 {% if game.away_logo %}
-                                    <img src="{{ game.away_logo }}" alt="{{ game.away_name }}" class="mini-logo">
+                                    <img src="{{ game.away_logo }}" alt="" class="mini-logo" loading="lazy">
                                 {% endif %}
                                 <span>{{ game.away_name }}</span>
                             </div>
@@ -56,13 +79,13 @@
                         <div class="team-row">
                             <div class="team-info">
                                 {% if game.home_logo %}
-                                    <img src="{{ game.home_logo }}" alt="{{ game.home_name }}" class="mini-logo">
+                                    <img src="{{ game.home_logo }}" alt="" class="mini-logo" loading="lazy">
                                 {% endif %}
                                 <span>{{ game.home_name }}</span>
                             </div>
                             <span class="team-score">{{ game.home_score }}</span>
                         </div>
-                    </div>
+                    </article>
                 {% endfor %}
             </div>
         {% else %}
@@ -70,10 +93,115 @@
         {% endif %}
     </div>
 
-    <!-- CLASSEMENTS COMPLETS PAR DIVISION -->
+    <!-- 2. FEUILLES DE MATCH & BOXSCORES DÉTAILLÉS -->
+    {% if boxscores %}
+    <section class="season-stats-section" aria-labelledby="heading-season-boxscores" style="margin-top: 2.5rem;">
+        <h2 id="heading-season-boxscores" class="stats-section-title">
+            📋 Feuilles de match &amp; Boxscores ({{ selected_season }}-{{ selected_season|add:1 }})
+        </h2>
+
+        <div class="boxscores-grid">
+            {% for match in boxscores %}
+            <article class="boxscore-card">
+                <header class="boxscore-header">
+                    <span class="boxscore-week">{{ match.week_label }} • {{ match.match_date }}</span>
+                    <span class="boxscore-status">{% if match.is_final %}FINAL{% else %}EN COURS{% endif %}</span>
+                </header>
+
+                <div class="boxscore-teams">
+                    <div class="boxscore-team-row">
+                        <a href="{{ match.away_team.url }}" class="boxscore-team-link">{{ match.away_team.title }}</a>
+                        <strong class="boxscore-score">{{ match.away_score }}</strong>
+                    </div>
+                    <div class="boxscore-team-row">
+                        <a href="{{ match.home_team.url }}" class="boxscore-team-link">{{ match.home_team.title }}</a>
+                        <strong class="boxscore-score">{{ match.home_score }}</strong>
+                    </div>
+                </div>
+
+                <div class="boxscore-metrics">
+                    <div><span>Yards totaux :</span> <strong>{{ match.away_total_yards }}</strong> vs <strong>{{ match.home_total_yards }}</strong></div>
+                    <div><span>Turnovers :</span> <strong>{{ match.away_turnovers }}</strong> vs <strong>{{ match.home_turnovers }}</strong></div>
+                </div>
+
+                {% if match.mvp_highlight %}
+                <p class="boxscore-mvp"><strong>Fait marquant :</strong> {{ match.mvp_highlight }}</p>
+                {% endif %}
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- 3. LEADERS STATISTIQUES JOUEURS DE LA SAISON -->
+    <section class="season-stats-section" aria-labelledby="heading-season-leaders" style="margin-top: 2.5rem;">
+        <h2 id="heading-season-leaders" class="stats-section-title">
+            ⭐ Leaders Statistiques Joueurs ({{ selected_season }}-{{ selected_season|add:1 }})
+        </h2>
+
+        <div class="leaders-grid">
+            <div class="leader-card">
+                <h3>Yards à la passe</h3>
+                <ol class="leader-list">
+                    {% for p in top_passers %}
+                    <li>
+                        <span><strong>{{ p.player_name }}</strong> <small>({{ p.team.title }})</small></span>
+                        <span class="leader-val">{{ p.pass_yards }} yds</span>
+                    </li>
+                    {% empty %}
+                    <li>Aucune donnée</li>
+                    {% endfor %}
+                </ol>
+            </div>
+
+            <div class="leader-card">
+                <h3>Yards à la course</h3>
+                <ol class="leader-list">
+                    {% for p in top_rushers %}
+                    <li>
+                        <span><strong>{{ p.player_name }}</strong> <small>({{ p.team.title }})</small></span>
+                        <span class="leader-val">{{ p.rush_yards }} yds</span>
+                    </li>
+                    {% empty %}
+                    <li>Aucune donnée</li>
+                    {% endfor %}
+                </ol>
+            </div>
+
+            <div class="leader-card">
+                <h3>Yards à la réception</h3>
+                <ol class="leader-list">
+                    {% for p in top_receivers %}
+                    <li>
+                        <span><strong>{{ p.player_name }}</strong> <small>({{ p.team.title }})</small></span>
+                        <span class="leader-val">{{ p.rec_yards }} yds</span>
+                    </li>
+                    {% empty %}
+                    <li>Aucune donnée</li>
+                    {% endfor %}
+                </ol>
+            </div>
+
+            <div class="leader-card">
+                <h3>Défense (Sacks &amp; Plaquages)</h3>
+                <ol class="leader-list">
+                    {% for p in top_defenders %}
+                    <li>
+                        <span><strong>{{ p.player_name }}</strong> <small>({{ p.team.title }})</small></span>
+                        <span class="leader-val">{{ p.sacks }} sacks</span>
+                    </li>
+                    {% empty %}
+                    <li>Aucune donnée</li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. CLASSEMENTS PAR DIVISION (AFC & NFC — 32 ÉQUIPES) -->
     {% if standings %}
-    <div class="full-standings-section">
-        <h2>🏆 Classements par Division</h2>
+    <div class="full-standings-section" style="margin-top: 2.5rem;">
+        <h2>🏆 Classements par Division ({{ selected_season }}-{{ selected_season|add:1 }})</h2>
         <div class="conferences-wrapper">
             {% for conf in standings %}
                 <div class="conference-block">
@@ -85,19 +213,19 @@
                                 <table class="mini-standings-table">
                                     <thead>
                                         <tr>
-                                            <th>Équipe</th>
-                                            <th>V</th>
-                                            <th>D</th>
-                                            <th>N</th>
-                                            <th>%</th>
+                                            <th scope="col">Équipe</th>
+                                            <th scope="col">V</th>
+                                            <th scope="col">D</th>
+                                            <th scope="col">N</th>
+                                            <th scope="col">%</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for t in div.teams %}
                                             <tr>
                                                 <td class="team-cell">
-                                                    {% if t.logo %}<img src="{{ t.logo }}" alt="">{% endif %}
-                                                    {{ t.name }}
+                                                    {% if t.logo %}<img src="{{ t.logo }}" alt="" loading="lazy">{% endif %}
+                                                    <span>{{ t.name }}</span>
                                                 </td>
                                                 <td>{{ t.wins }}</td>
                                                 <td>{{ t.losses }}</td>
@@ -114,6 +242,54 @@
             {% endfor %}
         </div>
     </div>
+    {% endif %}
+
+    <!-- 5. STATISTIQUES COLLECTIVES DES 32 FRANCHISES -->
+    {% if full_standings %}
+    <section class="season-stats-section" aria-labelledby="heading-team-collective-stats" style="margin-top: 2.5rem;">
+        <h2 id="heading-team-collective-stats" class="stats-section-title">
+            📊 Statistiques Collectives NFL ({{ selected_season }}-{{ selected_season|add:1 }})
+        </h2>
+
+        <div class="table-responsive" role="region" aria-label="Statistiques collectives des 32 franchises" tabindex="0">
+            <table class="nfl-stats-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Rang</th>
+                        <th scope="col">Franchise</th>
+                        <th scope="col">V</th>
+                        <th scope="col">D</th>
+                        <th scope="col">N</th>
+                        <th scope="col">% Vic.</th>
+                        <th scope="col">Pts Pour</th>
+                        <th scope="col">Pts Contre</th>
+                        <th scope="col">Yds Passe</th>
+                        <th scope="col">Yds Course</th>
+                        <th scope="col">Turnovers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in full_standings %}
+                    <tr>
+                        <td><strong>{{ forloop.counter }}</strong></td>
+                        <td><a href="{{ row.team.url }}" class="boxscore-team-link">{{ row.team.title }}</a></td>
+                        <td><strong>{{ row.wins }}</strong></td>
+                        <td>{{ row.losses }}</td>
+                        <td>{{ row.ties }}</td>
+                        <td>{{ row.win_pct }}</td>
+                        <td>{{ row.points_for }}</td>
+                        <td>{{ row.points_against }}</td>
+                        <td>{{ row.passing_yards }}</td>
+                        <td>{{ row.rushing_yards }}</td>
+                        <td class="{% if row.turnover_diff > 0 %}text-pos{% elif row.turnover_diff < 0 %}text-neg{% endif %}">
+                            {% if row.turnover_diff > 0 %}+{% endif %}{{ row.turnover_diff }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
     {% endif %}
 
     <div class="back-link">

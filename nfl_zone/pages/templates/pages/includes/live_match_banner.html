@@ -1,0 +1,94 @@
+{% if banner %}
+<div class="live-match-banner" role="region" aria-label="Score du match NFL en direct">
+    <div class="live-match-container">
+        <span class="live-badge">
+            <span class="live-dot" aria-hidden="true"></span>
+            {{ banner.badge_label }}
+        </span>
+
+        <div class="live-scoreboard">
+            <span class="team-name">{{ banner.away_team }}</span>
+            <strong class="team-score">{{ banner.away_score }}</strong>
+            <span class="score-sep">-</span>
+            <strong class="team-score">{{ banner.home_score }}</strong>
+            <span class="team-name">{{ banner.home_team }}</span>
+        </div>
+
+        <span class="live-quarter">{{ banner.quarter_info }}</span>
+
+        {% if banner.match_link %}
+        <a href="{{ banner.match_link }}" class="live-link">Suivre &rarr;</a>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .live-match-banner {
+        background-color: #013369;
+        color: #ffffff;
+        border-bottom: 2px solid #D50A0A;
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+    .live-match-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 0.65rem 1rem;
+    }
+    .live-badge {
+        background-color: #D50A0A;
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        padding: 0.2rem 0.55rem;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        text-transform: uppercase;
+    }
+    .live-dot {
+        width: 7px;
+        height: 7px;
+        background-color: #ffffff;
+        border-radius: 50%;
+        animation: livePulse 1.4s infinite;
+    }
+    @keyframes livePulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.25; }
+    }
+    .live-scoreboard {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-size: 0.95rem;
+    }
+    .team-score {
+        background: rgba(255, 255, 255, 0.14);
+        padding: 0.1rem 0.45rem;
+        border-radius: 4px;
+        font-weight: 800;
+    }
+    .live-quarter {
+        color: #CBD5E1;
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
+    .live-link {
+        color: #ffffff;
+        font-weight: 700;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        font-size: 0.82rem;
+    }
+    .live-link:hover {
+        color: #F8FAFC;
+    }
+</style>
+{% endif %}
